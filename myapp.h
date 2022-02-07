@@ -33,11 +33,13 @@ public:
         icon_render_1.setTexture(icon);
         //arrow_render.setAnchor({0.5f, 1.0f});
         icon_render_1.setPosition(SCREEN_WIDTH * 0.25f, SCREEN_HEIGHT * 0.5f);
+        icon_render_1.setAngle(90);
 
         icon_render_2.setTexture(icon);
         //tileset_render.setScale({1.3f, 1.3f});
         icon_render_2.setPosition(SCREEN_WIDTH * 0.75f, SCREEN_HEIGHT * 0.5f);
         icon_render_2.setAnchor({0.0f, 0.5f});
+        icon_render_2.setAngle(90);
     }
     void update(float dt) override {
         auto angle = icon_render_1.getAngle();
