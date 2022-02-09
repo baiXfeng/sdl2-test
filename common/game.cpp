@@ -106,12 +106,10 @@ int Game::run() {
 
     _delegate->init();
     auto& fps = _fps;
-    float delta = fps.delta();
-
     while (!_quit) {
         fps.start();
         this->input();
-        _delegate->update(delta);
+        _delegate->update( fps.delta() );
         SDL_SetRenderDrawColor(sdl_renderer, 0x0, 0x0, 0x0, 0xff );
         SDL_RenderClear(sdl_renderer);
         _delegate->render(sdl_renderer);
