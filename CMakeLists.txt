@@ -49,6 +49,7 @@ if (PSV)
 			vita2d
 			debugnet
 			freetype
+			SceAudioIn_stub
 			SceDisplay_stub
 			SceCtrl_stub
 			SceNetCtl_stub

@@ -9,8 +9,8 @@
 #include "common/loadres.h"
 #include "common/render.h"
 
-#define SCREEN_WIDTH 480
-#define SCREEN_HEIGHT 272
+#define SCREEN_WIDTH 960
+#define SCREEN_HEIGHT 544
 
 class MyApp : public Game::App {
 private:
@@ -20,6 +20,9 @@ private:
     SDL_Texture* icon;
     RenderCopyEx icon_render_1;
     RenderCopyEx icon_render_2;
+
+    SDL_Texture* render_target;
+    RenderCopyEx render_target_copy;
 
 public:
     void init() override {
@@ -38,17 +41,29 @@ public:
         icon_render_2.setScale({1.3f, 1.3f});
         icon_render_2.setPosition(SCREEN_WIDTH * 0.75f, SCREEN_HEIGHT * 0.5f);
         icon_render_2.setAnchor({0.0f, 0.5f});
+
+        render_target = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, SCREEN_WIDTH, SCREEN_HEIGHT);
+        render_target_copy.setTexture(render_target);
+        render_target_copy.setAnchor({0.5f, 0.5f});
+        render_target_copy.setPosition(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f);
     }
     void update(float dt) override {
         auto angle = icon_render_1.getAngle();
         icon_render_1.setAngle(angle += 90 * dt);
         angle = icon_render_2.getAngle();
         icon_render_2.setAngle(angle -= 90 * dt);
+
+        render_target_copy.setAngle(render_target_copy.getAngle() + 90 * dt);
     }
     void render(SDL_Renderer* renderer) override {
+
+        SDL_SetRenderTarget(renderer, render_target);
         bg_render.draw(renderer);
         icon_render_2.draw(renderer);
         icon_render_1.draw(renderer);
+        SDL_SetRenderTarget(renderer, nullptr);
+
+        render_target_copy.draw(renderer);
     }
     void fini() override {
         res::free_texture(bg);
