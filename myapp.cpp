@@ -1,10 +1,6 @@
 //
 // Created by baifeng on 2021/7/12.
 //
-
-#ifndef SDL2_TEST_GAME_H
-#define SDL2_TEST_GAME_H
-
 #include "common/game.h"
 #include "common/loadres.h"
 #include "common/render.h"
@@ -43,6 +39,7 @@ public:
         icon_render_2.setAnchor({0.0f, 0.5f});
 
         render_target = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, SCREEN_WIDTH, SCREEN_HEIGHT);
+        SDL_SetTextureBlendMode(render_target, SDL_BLENDMODE_BLEND);
         render_target_copy.setTexture(render_target);
         render_target_copy.setAnchor({0.5f, 0.5f});
         render_target_copy.setPosition(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f);
@@ -68,10 +65,19 @@ public:
     void fini() override {
         res::free_texture(bg);
         res::free_texture(icon);
+        res::free_texture(render_target);
     }
     Vector2i screenSize() override {
         return {SCREEN_WIDTH, SCREEN_HEIGHT};
     }
 };
 
-#endif //SDL2_TEST_GAME_H
+#if defined(__PSP__)
+#include <SDL_main.h>
+int SDL_main(int argc, char * argv[]) {
+#else
+int main(int argc, char * argv[]) {
+#endif
+    MyApp app;
+    return app.run();
+}
